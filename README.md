@@ -4,7 +4,7 @@ This repository includes content for programming assignment \#1 for the Johns Ho
 
 The key data transformation required to produce the charts is to combine the Date and Time variables from the input file into a single datetime field. All other variables in the input file can be used directly as they were loaded from the input file.
 
-Each R script must read the raw data, subset it to include only the first two days of February, 2007. The subsetted data set includes 2,880 observations, one for each minute of each day.  
+Each R script must read the raw data, subset it to include only the first two days of February, 2007, and produce a chart that matches the image from the assignment instructions. The subsetted data set includes 2,880 observations, one for each minute of each day.  
 
 ## Repository Contents
 <table>
@@ -29,7 +29,7 @@ with labels as illustrated in the course instructions.</td></tr>
 </table>
 
 ## Results
-The output from each R script is displayed here, and matches the content from the [Assignment 1 Instructions](https://github.com/rdpeng/ExData_Plotting1/blob/master/README.md). Also, each PNG file was checked in a graphics file editor to confirm that it is 480px x 480px. 
+The output from each R script is displayed here, and matches the content from the [Assignment 1 Instructions](https://github.com/rdpeng/ExData_Plotting1/blob/master/README.md). Also, each PNG file was checked in a graphics file editor to confirm that it is 480px x 480px.
 
 ### Plot 1
 <img src="plot1.png" alt="Drawing" style="width: 480px;" />
