@@ -51,7 +51,7 @@ with(theSubset, {
      ## upper right
      plot(dateTime, Voltage,type = "n",
                           ylab="Voltage",
-                          xlab=" ")
+                          xlab="datetime")
      lines(dateTime,Voltage)
      ## lower left 
      plot(dateTime,Sub_metering_1, type = "n",
