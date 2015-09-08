@@ -1,8 +1,8 @@
-# plot1.R -- Exploratory Data Analysis project 2
+# plot4.R -- Exploratory Data Analysis project 2
 # 
 # author:  Len Greski
 # date:    8 September 2015
-# purpose: answer question 1 of 6
+# purpose: answer question 4 of 6
 #
 # check to see whether power consumption zip file exists on disk. If it is not present,
 # download and unzip
@@ -19,18 +19,22 @@ NEI <- readRDS("summarySCC_PM25.rds")
 # Expect to read this in less than a second 
 SCC <- readRDS("Source_Classification_Code.rds")
 
-## question 1: Have total emissions from PM2.5 decreased in the United States from 
-##             1999 to 2008? Using the base plotting system, make a plot showing the total 
-##             PM2.5 emission from all sources for each of the years 1999, 2002, 2005, and 2008.
+# question 4: Across the United States, how have emissions
+#             from coal combustion-related sources changed from 1999–2008?
 
 ## aggregate data by year across all measurements
-yearFactor <- factor(NEI$year)
-aggPM25 <- aggregate(x = NEI$Emissions,by = list(yearFactor), FUN = "sum")
+
+coalSCC <- SCC[grep("Coal",SCC$Short.Name),1]
+# confirmed we should not grep on [Cc]oal because it includes charcoal manufacturing
+
+coalSources <- NEI[NEI$SCC %in% coalSCC,]
+yearFactor <- factor(coalSources$year)
+aggPM25 <- aggregate(Emissions ~ yearFactor,data = coalSources, FUN = "sum")
 
 # generate bar plot
-thePngFile <- png(file="plot1.png",width=480,height=480,units = "px")
-barplot(aggPM25$x, names.arg=aggPM25$Group.1,
+thePngFile <- png(file="plot4.png",width=480,height=480,units = "px")
+barplot(aggPM25$Emissions, names.arg=aggPM25$yearFactor,
         xlab = "Year",
         ylab = "Total PM2.5 Emissions",
-        main = "United States PM2.5 Emissions Across All Sources")
+        main = "United States PM2.5 Coal Related Emissions")
 dev.off()

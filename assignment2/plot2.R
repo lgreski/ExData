@@ -1,8 +1,8 @@
-# plot1.R -- Exploratory Data Analysis project 2
+# plot2.R -- Exploratory Data Analysis project 2
 # 
 # author:  Len Greski
 # date:    8 September 2015
-# purpose: answer question 1 of 6
+# purpose: answer question 2 of 6
 #
 # check to see whether power consumption zip file exists on disk. If it is not present,
 # download and unzip
@@ -19,18 +19,19 @@ NEI <- readRDS("summarySCC_PM25.rds")
 # Expect to read this in less than a second 
 SCC <- readRDS("Source_Classification_Code.rds")
 
-## question 1: Have total emissions from PM2.5 decreased in the United States from 
-##             1999 to 2008? Using the base plotting system, make a plot showing the total 
-##             PM2.5 emission from all sources for each of the years 1999, 2002, 2005, and 2008.
+## question 2: Have total emissions from PM2.5 decreased in the Baltimore City, 
+##             Maryland (fips == "24510") from 1999 to 2008? 
+##             Use the base plotting system to make a plot answering this question.
 
 ## aggregate data by year across all measurements
-yearFactor <- factor(NEI$year)
-aggPM25 <- aggregate(x = NEI$Emissions,by = list(yearFactor), FUN = "sum")
+baltimore <- NEI[NEI$fips == "24510",]
+yearFactor <- factor(baltimore$year)
+aggPM25 <- aggregate(Emissions ~ yearFactor, data=baltimore, FUN = "sum")
 
 # generate bar plot
-thePngFile <- png(file="plot1.png",width=480,height=480,units = "px")
-barplot(aggPM25$x, names.arg=aggPM25$Group.1,
+thePngFile <- png(file="plot2.png",width=480,height=480,units = "px")
+barplot(aggPM25$Emissions, names.arg=aggPM25$yearFactor,
         xlab = "Year",
         ylab = "Total PM2.5 Emissions",
-        main = "United States PM2.5 Emissions Across All Sources")
+        main = "Baltimore PM2.5 Emissions - All Sources")
 dev.off()
