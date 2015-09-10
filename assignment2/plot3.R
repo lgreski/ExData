@@ -33,9 +33,10 @@ aggPM25 <- aggregate(Emissions ~ yearFactor + typeFactor,
                      data = baltimore, FUN = "sum")
 library(ggplot2)
 # generate TBD plot -- STOPPED HERE -- 
+
 # thePngFile <- png(file="plot3.png",width=480,height=480,units = "px")
-barplot(aggPM25$x, names.arg=aggPM25$Group.1,
-        xlab = "Year",
-        ylab = "Total PM2.5 Emissions",
-        main = "Baltimore PM2.5 Emissions Across All Sources")
+## chart goes here 
+g <- ggplot(aggPM25, aes(x=yearFactor, y=Emissions,
+                         ymin=0, ymax=3500)) + geom_bar(stat="identity")
+g + facet_grid(. ~typeFactor)
 # dev.off()
