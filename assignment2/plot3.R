@@ -8,8 +8,12 @@
 # download and unzip
 
 if(!file.exists("pm25_emissions.zip")){
+     # since download.file is OS specific, check the OS and either set to wininet for windows
+     # or curl for everything else
+     dlMethod <- "curl"
+     if(substr(Sys.getenv("OS"),1,7) == "Windows") dlMethod <- "wininet"
      url <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip"
-     download.file(url,destfile='pm25_emissions.zip',method="curl",mode="wb")
+     download.file(url,destfile='pm25_emissions.zip',method=dlMethod,mode="wb")
      unzip(zipfile = "pm25_emissions.zip")    
 }
 
@@ -32,13 +36,11 @@ typeFactor <- factor(baltimore$type)
 aggPM25 <- aggregate(Emissions ~ yearFactor + typeFactor,
                      data = baltimore, FUN = "sum")
 library(ggplot2)
-# generate TBD plot -- STOPPED HERE -- 
 
 thePngFile <- png(file="plot3.png",width=480,height=480,units = "px")
-## chart goes here 
 g <- ggplot(aggPM25, aes(x=yearFactor, y=Emissions,
                          ymin=0, ymax=2500)) + geom_bar(stat="identity")
 g + facet_grid(. ~typeFactor) + labs(x = "Year") + 
      labs(y = expression("Total " * PM[2.5] * " Emissions")) +
-     labs(title = "Baltimore City Emissions by Source")
+     labs(title = expression("Baltimore City " * PM[2.5] * " Emissions by Source"))
 dev.off()

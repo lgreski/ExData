@@ -8,8 +8,12 @@
 # download and unzip
 
 if(!file.exists("pm25_emissions.zip")){
+     # since download.file is OS specific, check the OS and either set to wininet for windows
+     # or curl for everything else
+     dlMethod <- "curl"
+     if(substr(Sys.getenv("OS"),1,7) == "Windows") dlMethod <- "wininet"
      url <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip"
-     download.file(url,destfile='pm25_emissions.zip',method="curl",mode="wb")
+     download.file(url,destfile='pm25_emissions.zip',method=dlMethod,mode="wb")
      unzip(zipfile = "pm25_emissions.zip")    
 }
 
@@ -31,6 +35,6 @@ aggPM25 <- aggregate(x = NEI$Emissions,by = list(yearFactor), FUN = "sum")
 thePngFile <- png(file="plot1.png",width=480,height=480,units = "px")
 barplot(aggPM25$x, names.arg=aggPM25$Group.1,
         xlab = "Year",
-        ylab = "Total PM2.5 Emissions",
-        main = "United States PM2.5 Emissions Across All Sources")
+        ylab = expression("Total " * PM[2.5] * " Emissions"),
+        main = expression("United States " * PM[2.5] * " Emissions: All Sources"))
 dev.off()

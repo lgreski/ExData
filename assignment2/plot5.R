@@ -8,8 +8,12 @@
 # download and unzip
 
 if(!file.exists("pm25_emissions.zip")){
+     # since download.file is OS specific, check the OS and either set to wininet for windows
+     # or curl for everything else
+     dlMethod <- "curl"
+     if(substr(Sys.getenv("OS"),1,7) == "Windows") dlMethod <- "wininet"
      url <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip"
-     download.file(url,destfile='pm25_emissions.zip',method="curl",mode="wb")
+     download.file(url,destfile='pm25_emissions.zip',method=dlMethod,mode="wb")
      unzip(zipfile = "pm25_emissions.zip")    
 }
 
@@ -26,7 +30,6 @@ SCC <- readRDS("Source_Classification_Code.rds")
 
 vehicleSCC <- SCC[grep("Highway Veh",SCC$Short.Name),1]
 vehicleNames <- grep("Highway Veh",SCC$Short.Name,value = TRUE)
-vehicleNames[!vehicleNames %in% grep("[Vv]ehicle",SCC$Short.Name,value = TRUE)]
 
 vehicleSources <- NEI[NEI$SCC %in% vehicleSCC & NEI$fips == "24510",]
 yearFactor <- factor(vehicleSources$year)
@@ -36,6 +39,6 @@ aggPM25 <- aggregate(Emissions ~ yearFactor,data = vehicleSources, FUN = "sum")
 thePngFile <- png(file="plot5.png",width=480,height=480,units = "px")
 barplot(aggPM25$Emissions, names.arg=aggPM25$yearFactor,
         xlab = "Year",
-        ylab = "Vehicle Related PM2.5 Emissions",
-        main = "Baltimore PM2.5 Motor Vehicle Emissions")
+        ylab = expression("Vehicle Related " * PM[2.5] * " Emissions"),
+        main = expression("Baltimore " * PM[2.5] * " Motor Vehicle Emissions"))
 dev.off()
