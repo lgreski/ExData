@@ -37,15 +37,17 @@ yearFactor <- factor(vehicleSources$year)
 aggPM25 <- aggregate(Emissions ~ yearFactor + fips,data = vehicleSources, FUN = "sum")
 baltimore <- aggPM25[aggPM25$fips == "24510",]
 losAngeles <- aggPM25[aggPM25$fips == "06037",]
-# generate bar plot
+# generate bar plot, settting constant ylim to make charts comparable 
 thePngFile <- png(file="plot6.png",width=580,height=480,units = "px")
 par(mfrow = c(1,2))
 barplot(baltimore$Emissions, names.arg=baltimore$yearFactor,
         xlab = "Year",
         ylab = expression(PM[2.5] * " Emissions"),
+        ylim = c(0,5000), 
         main = expression("Baltimore " * PM[2.5] * " Vehicle Emissions"))
 barplot(losAngeles$Emissions, names.arg=losAngeles$yearFactor,
         xlab = "Year",
         ylab = expression(PM[2.5] * " Emissions"),
+        ylim = c(0,5000),
         main = expression("Los Angeles " * PM[2.5] * " Vehicle Emissions"))
 dev.off()
