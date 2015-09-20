@@ -28,6 +28,9 @@ SCC <- readRDS("Source_Classification_Code.rds")
 
 ## aggregate data by year across all measurements
 
+# subset SCC to onroad / highway vehicles only, which excludes
+# off road vehicles like ATVs, dirt bikes, and other off road recreational 
+# equipment, a total of 1,137 sources
 vehicleSCC <- SCC[grep("Highway Veh",SCC$Short.Name),1]
 vehicleNames <- grep("Highway Veh",SCC$Short.Name,value = TRUE)
 
@@ -39,6 +42,6 @@ aggPM25 <- aggregate(Emissions ~ yearFactor,data = vehicleSources, FUN = "sum")
 thePngFile <- png(file="plot5.png",width=480,height=480,units = "px")
 barplot(aggPM25$Emissions, names.arg=aggPM25$yearFactor,
         xlab = "Year",
-        ylab = expression("Vehicle Related " * PM[2.5] * " Emissions"),
+        ylab = expression(PM[2.5] * " Emissions"),
         main = expression("Baltimore " * PM[2.5] * " Motor Vehicle Emissions"))
 dev.off()
