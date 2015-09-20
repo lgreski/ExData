@@ -28,8 +28,9 @@ SCC <- readRDS("Source_Classification_Code.rds")
 
 ## aggregate data by year across all measurements
 
-coalSCC <- SCC[grep("Coal",SCC$Short.Name),1]
-# confirmed we should not grep on [Cc]oal because it includes charcoal manufacturing
+# decided to pull any source that is related to coal, including charcoal production
+# mining of coal, and residential charcoal burning, a total of 239 different sources  
+coalSCC <- SCC[grep("[Cc]oal",SCC$Short.Name),1]
 
 coalSources <- NEI[NEI$SCC %in% coalSCC,]
 yearFactor <- factor(coalSources$year)
@@ -39,6 +40,6 @@ aggPM25 <- aggregate(Emissions ~ yearFactor,data = coalSources, FUN = "sum")
 thePngFile <- png(file="plot4.png",width=480,height=480,units = "px")
 barplot(aggPM25$Emissions, names.arg=aggPM25$yearFactor,
         xlab = "Year",
-        ylab = expression("Total " * PM[2.5] * " Emissions"),
+        ylab = expression(PM[2.5] * " Emissions"),
         main = expression("United States " * PM[2.5] * " Coal Related Emissions"))
 dev.off()
