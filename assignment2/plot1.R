@@ -4,6 +4,8 @@
 # date:    8 September 2015
 # purpose: answer question 1 of 6
 #
+# codebook for NEI is located at http://www3.epa.gov/ttn/chief/net/2008neiv3/2008_neiv3_tsd_draft.pdf 
+#
 # check to see whether power consumption zip file exists on disk. If it is not present,
 # download and unzip
 
